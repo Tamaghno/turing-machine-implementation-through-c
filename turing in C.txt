@@ -1,0 +1,158 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int j,k,c=0,v=0;char ch;int n;char s[20];char str[20];
+void main()
+{
+	
+
+		
+	    int i;
+		printf("\n**********  TURING MACHINE IMPLEMENTATION THROUGH C PROGRAMMING *************\n");
+		
+		printf("\nENTER THE STRING TO CHECK ITS ACCEPTANCE IN THE LANGUAGE a^n b^n  : \n ");
+		
+		scanf("%s", s);
+		for(i = 0; s[i] != '\0'; ++i);
+		n=i;
+		
+		char *tmp = strdup(s);
+
+        strcpy(s, "*B"); 
+        strcat(s, tmp);
+		s[n+2]='B';
+		s[n+3]='*';
+		
+		printf("\n the string is : %s",s);
+		
+	
+    
+		printf("\n********  HERE'S THE GIVEN STRING REPRESENTATION ON A TAPE  ********\n");
+		
+		for(i=0;i<(n+4);i++)
+		printf("| %c |",s[i]);
+		printf("\n");
+		
+		printf("\n********  TM OPERATION STARTS  ********\n");
+		
+		check_A();
+		
+}
+ 
+	void check_A()
+	{
+	    int i;
+	    k=0;
+		for(i=0;i<(n+4);i++)
+		{
+			
+			if(s[i]=='a')
+			{
+			
+			for(j=0;j<i;j++)
+			{
+			  
+			    str[k]=s[j];
+			    k++;
+			    
+			}
+			str[i]='X';k++;
+			
+			for(j=i+1;j<(n+4);j++)
+			{str[k]=s[j];
+			k++;}
+			
+			for(j=0;j<(n+4);j++)
+			s[j]=str[j];
+			
+		    for(i=0;i<(n+4);i++)
+			printf("| %c |",str[i]);
+		    printf("\n");
+	        check_B();
+			}
+			
+			else if(s[i]=='Y' && s[i+1]=='X')
+			{
+			 printf("\n************  HAULT  ************\n");
+			 printf("\n THIS STRING IS UNACCEPTABLE\n "); 
+			 return;
+			
+			 }
+			 else if((s[i]=='B')&&(s[i+1]=='*'))
+			{  
+			   printf("\n00000000000000000000000000000000000000000000000000000000000000000000000\n");
+		       count();
+			 }
+		}
+	}
+	
+	void check_B()
+	{
+	    int i;
+		for(i=0;i<(n+4);i++)
+		{
+		
+			if(s[i]=='b')
+			{
+		
+			for(j=0;j<i;j++)
+			{
+			    str[k]=s[j];
+			    k++;
+			    
+			}
+			str[i]='Y';k++;
+			for(j=i+1;j<(n+4);j++)
+			{str[k]=s[j];
+			k++;}
+			
+			for(j=0;j<(n+4);j++)
+			s[j]=str[j];
+			
+			for(i=0;i<(n+4);i++)
+            printf("| %c |",str[i]);
+		    printf("\n");
+			check_A();
+			}
+			else if(s[i]=='Y' && s[i+1]=='X')
+			{
+			 printf("\n************  HAULT  ************\n");
+			 printf("\n THIS STRING IS UNACCEPTABLE \n ");
+			 return;
+			
+			 }
+			   else if((s[i]=='B')&&(s[i+1]=='*'))
+			{   
+			    printf("\n0000000000000000000000000000000000000000000000000000000000000000000000\n");
+			    count();
+			 }
+	    }
+	}
+	
+	
+	void count()
+	{
+	    int flag=0;int i;
+	    for(i=0;i<(n+4);i++)
+	   {
+	      
+	       if(s[i]=='X')
+	       {
+	           c++;
+	       }
+	       else if(s[i]=='Y')
+	       {
+	           v++;
+	       }
+	       else if(s[i]=='a' || s[i]=='b')
+	       {
+	            flag=1;
+	            printf("\n************  HAULT  ************\n");
+	            printf("\n THIS STRING IS UNACCEPTABLE  \n");
+	            return;
+	       }
+	   }
+	   if((c==v)&&(flag==0))
+	   printf(" THIS STRING IS ACCEPTABLE  ");
+	   
+    }
